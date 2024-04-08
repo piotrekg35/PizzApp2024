@@ -1,0 +1,37 @@
+.container {
+    margin: 30px 0 30px 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.info {
+    margin: 15px 5px 5px 20px;
+}
+
+.left-component {
+    background-color: #f0f0f0; /* Example background color */
+    padding: 15px;
+    border-radius: 10px 0 0 10px;
+}
+
+.right-component {
+    background-color: #dcdcdc; /* Example background color */
+    padding: 15px;
+    border-radius: 0 10px 10px 0;
+}
+
+.date {
+    font-size: 20px;
+    border-bottom: #868686 solid 2px;
+    padding-top: 15px;
+}
+
+.orders{
+    padding: 5px;
+}
+
+.current-order {
+    background: #cecece;
+    border-radius: 10px;
+    margin: 5px;
+}

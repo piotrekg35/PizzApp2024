@@ -1,0 +1,7 @@
+#goToLoginPage{
+    margin-top: 10px;
+}
+#goToLoginPage:hover{
+    color: navy;
+    cursor: pointer;
+}

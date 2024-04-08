@@ -1,0 +1,68 @@
+*{
+    user-select: none;
+}
+fa-icon{
+    cursor: pointer;
+}
+.back{
+    display: flex;
+    position: absolute;
+    font-size: large;
+    cursor: pointer;
+}
+img{
+    width: 900px;
+    height: 600px;
+    position: relative;
+    bottom: -3em;
+}
+.left{
+    position: relative;
+    left:5px;
+    bottom: 280px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 50px;
+}
+.right{
+    position: relative;
+    left:860px;
+    bottom: 325px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 50px;
+}
+@media(max-width: 1000px){
+    .wrapper{
+        width: 600px;
+    }
+    img{
+        width: 600px;
+        height: 400px;
+    }
+    .left{
+        right:5px;
+        bottom: 180px;
+    }
+    .right{
+        left:560px;
+        bottom: 225px;
+    }
+}
+@media(max-width: 700px){
+    .wrapper{
+        width: 450px;
+    }
+    img{
+        width: 450px;
+        height: 300px;
+    }
+    .left{
+        right:5px;
+        bottom: 120px;
+    }
+    .right{
+        left:410px;
+        bottom: 165px;
+    }
+}

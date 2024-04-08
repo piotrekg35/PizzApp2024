@@ -1,0 +1,27 @@
+<div class="back" (click)="goBack()">
+    <fa-icon [icon]="faChevronLeft" size="lg"(click)="goBack()"></fa-icon>
+    <p>Wróć</p>
+</div>
+<div style="display: flex;flex-direction: column;align-items: center;">
+    <div class="wrapper" style="display: flex;flex-direction: column;align-items: flex-start;">
+    <img [src]="photoLink" alt={{link_to_photos}}>
+    <fa-icon [icon]="faChevronLeft" size="lg" class="left" (click)="prevImg()"></fa-icon>
+    <fa-icon [icon]="faChevronRight" size="lg" class="right" (click)="nextImg()"></fa-icon>
+    <h4 *ngIf="rating==0">Brak ocen</h4>
+    <h4 *ngIf="rating>0">Ocena: {{rating}}</h4>
+    <h4>Składniki</h4>
+    <p>{{ingredients}}</p>
+    <h4>Opis</h4>
+    <p>{{description}}</p>
+    <div *ngIf="!client">
+        <h4>Cena</h4>
+        <p>Mała: {{price}} zł</p>
+        <p>Średnia: {{Math.ceil(price*1.3)-0.01}} zł</p>
+        <p>Duża: {{Math.ceil(price*1.5)-0.01}} zł</p>
+    </div>
+    <app-order-scheme *ngIf="client" [id]="id" [price]="price" [name]="name" [link_to_photos]="link_to_photos"></app-order-scheme>
+
+    <button type="button" class="btn btn-dark"  *ngIf="manager" (click)="goToEdit()">Edytuj</button>
+    <app-rating style="width: 100%;" (newItemEvent)="getDishInfo()" [id]="id" [old_rating]="rating"></app-rating>
+    </div>
+</div>

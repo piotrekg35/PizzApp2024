@@ -1,0 +1,50 @@
+<div class="container">
+    <div class="left-component">
+        <p style="font-size:2em">Koszyk</p>
+        <p style="font-size:1.2em">{{msg}}</p>
+        <p *ngIf="reserved.length===0">Brak produktów w koszyku</p>
+        <div class="current-order" style="display: flex;" *ngFor="let r of reserved">
+            <img [src]="r.link_to_photos[0]" style="height: 200px;width: 200px;border-radius: 8px;">
+            <div class="info">
+                <p style="font-size:1.2em">{{r.name}} {{r.size}} x {{r.ordered}}</p>
+                <p style="font-size:1.2em">Cena: {{r.price}}</p>
+                <p style="font-size:1.2em">Suma: {{r.price * r.ordered}}</p>
+            </div>
+        </div>
+        <p *ngIf="reserved.length!==0" style="font-size:1.6em">Do zapłaty: {{finalPrice}}</p>
+        <button type="button" class="btn btn-dark" style="margin: 5px;" *ngIf="reserved.length!==0" (click)="buy()">Zapłać</button>
+    </div>
+    <div class="right-component" id="zaznacz">
+        <p style="font-size:2em">Zaznacz</p>
+        <fieldset>
+            <div>
+                <input type="radio" id="odbior" value="odbior" checked #odbior (change)='clikRadio(odbior)'/>
+                <label for="odbior">Odbiór w restauracji (za darmo)</label>
+                <fieldset id="odbiorselect" style="margin-left: 1em">
+                    <div *ngFor="let local of locals; index as i">
+                        <input type="radio" id={{local}} class="innerOdbiorRadio" [checked]="i==0"
+                               #odbior (change)='clikInnerRadio(odbior)'/>
+                        <label for={{local}}>{{local}}</label>
+                    </div>
+                </fieldset>
+
+            </div>
+            <div>
+                <input type="radio" id="dostawa" value="dostawa" #dostawa (change)='clikRadio(dostawa)'/>
+                <label for="dostawa">Dostawa na wskazany adres (+9.99 zł)</label>
+                <form id="cartForm" style="display: none;margin-left: 1em;">
+                    <div class="form-group">
+                        <label for="address">Adres</label>
+                        <input type="text" class="form-control" id="address" [(ngModel)]="address" [ngModelOptions]="{standalone: true} " >
+                        <label for="postcode">Kod pocztowy</label>
+                        <input type="text" class="form-control" id="postcode" [(ngModel)]="postcode" [ngModelOptions]="{standalone: true} " >
+                        <label for="city">Miejscowość</label>
+                        <input type="text" class="form-control" id="city" [(ngModel)]="city" [ngModelOptions]="{standalone: true} " >
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+

@@ -1,0 +1,28 @@
+<h4>Wybierz rozmiar pizzy</h4>
+<div style="display: flex;justify-content: center;flex-direction: column;">
+    <div style="display: flex;justify-content: space-between;">
+        <p style="padding-right: 0.5em">Mała: {{price}} zł</p>
+        <div style="display: flex;justify-content:right">
+            <fa-icon [icon]="faMinusCircle" size="lg" (click)="resign('MAŁA')" [ngStyle]="{'opacity': ordered[0]==0 ?'0.5' : '1' }"></fa-icon>
+            <p style="margin:0px 10px 0px 10px ; font-size: large;">{{ordered[0]}}</p>
+            <fa-icon [icon]="faPlusCircle" size="lg" (click)="order('MAŁA')" *ngIf="max_amount>0"></fa-icon>
+        </div>
+
+    </div>
+    <div style="display: flex;justify-content: space-between;">
+        <p style="padding-right: 0.5em">Średnia: {{Math.ceil(price*1.3)-0.01}} zł</p>
+        <div style="display: flex;justify-content:right">
+            <fa-icon [icon]="faMinusCircle" size="lg" (click)="resign('ŚREDNIA')" [ngStyle]="{'opacity': ordered[1]==0 ?'0.5' : '1' }"></fa-icon>
+            <p style="margin:0px 10px 0px 10px ; font-size: large;">{{ordered[1]}}</p>
+            <fa-icon [icon]="faPlusCircle" size="lg" (click)="order('ŚREDNIA')" *ngIf="max_amount>0"></fa-icon>
+        </div>
+    </div>
+    <div style="display: flex;justify-content: space-between;">
+        <p style="padding-right: 0.5em">Duża: {{Math.ceil(price*1.5)-0.01}} zł</p>
+        <div style="display: flex;justify-content:right">
+            <fa-icon [icon]="faMinusCircle" size="lg" (click)="resign('DUŻA')" [ngStyle]="{'opacity': ordered[2]==0 ?'0.5' : '1' }"></fa-icon>
+            <p style="margin:0px 10px 0px 10px ; font-size: large;">{{ordered[2]}}</p>
+            <fa-icon [icon]="faPlusCircle" size="lg" (click)="order('DUŻA')" *ngIf="max_amount>0"></fa-icon>
+        </div>
+    </div>
+</div>

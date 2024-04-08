@@ -1,0 +1,7 @@
+#reset:hover{
+    color:navy;
+    cursor: pointer;
+}
+#reset{
+    margin-top: 10px;
+}

@@ -1,0 +1,14 @@
+
+    <div class="card" style="width: 300px;">
+        <div class="card-block" style="width: 300px;">
+            <img [src]="photoLink" alt={{link_to_photos}} (click)="goToDetails()">
+            <fa-icon [icon]="faChevronLeft" size="lg" class="left" (click)="prevImg()"></fa-icon>
+            <fa-icon [icon]="faChevronRight" size="lg" class="right" (click)="nextImg()"></fa-icon>
+            <fa-icon [icon]="faTrash" size="lg" class="trash" (click)="deleteDish()" *ngIf="manager"></fa-icon>
+            <p *ngIf="max_amount==0" style="font-weight:bold">[Niedostępne] {{name}}</p>
+            <p *ngIf="max_amount>0" [ngStyle]="{'font-weight': max_amount<=3 ?'bold' : 'normal' }">Pizza {{name}}</p>
+            <p *ngIf="rating==0">Brak ocen</p>
+            <p *ngIf="rating>0">Ocena: {{rating}}</p>
+            <p>Cena: od {{price}} zł</p>
+        </div>
+    </div>

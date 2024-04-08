@@ -1,0 +1,7 @@
+<div style="border: 1px black solid;border-radius:10px;margin: 5px 0px;background-color: whitesmoke;">
+    <h5 *ngIf="nick.length==0">gość</h5>
+    <h5 *ngIf="nick.length>0">{{nick}}</h5>
+    <h6>{{title}}</h6>
+    <p>{{description}}</p>
+    <h5>{{new_rating}}/5</h5>
+</div>

@@ -1,0 +1,36 @@
+<h3>Opinie</h3>
+<h4 *ngIf="rating_list.length==0">Brak opinii</h4>
+<div *ngFor="let rating of rating_list">
+  <app-comment [new_rating]="rating.new_rating"
+  [nick]="rating.nick"
+  [title]="rating.title"
+  [description]="rating.description"
+  [new_rating]="rating.rating">
+  </app-comment>
+</div>
+<div *ngIf="client && !reviewed && bought || manager">
+    <h3>Dodaj opinię.</h3>
+    <h4>Obowiązkowe pola zaznaczone są gwiazdką (*)</h4>
+    <h4>{{msg}}</h4>
+    <form>
+  <div style="display:flex;flex-direction: column;"class="form-group" style="width:100%">
+    <div style="display:flex;margin-top: 10px;">
+      <label for="title">Tytuł</label>
+      <input type="text" class="form-control" id="title" [(ngModel)]="title" [ngModelOptions]="{standalone: true}">
+    </div>
+    <div style="display: flex;margin-top: 10px;">
+      <label for="description">Opis</label>
+      <input type="text" class="form-control" id="description" [(ngModel)]="description" [ngModelOptions]="{standalone: true}">
+    </div>
+      <div style="display:flex" *ngIf="!manager">
+          <label for="nick">Nick</label>
+          <input style="width: 200px;"type="text" class="form-control" id="nick" [(ngModel)]="nick" [ngModelOptions]="{standalone: true}">
+      </div>
+      <div style="display:flex;" *ngIf="!manager">
+        <label for="rate">Ocena 1-5*</label>
+        <input style="width: 100px;"type="number" min="1" max="5" class="form-control" id="rate"[(ngModel)]="new_rating" [ngModelOptions]="{standalone: true}">
+      </div>
+      <button type="button" class="btn btn-dark" (click)="addRating()">Dodaj opinię</button>
+    </div>
+    </form>
+</div>
