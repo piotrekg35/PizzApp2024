@@ -33,6 +33,7 @@ export class LogInComponent {
 
     response.subscribe((data:any) => {
       this.rs.emitValues(data.body.id, this.email_input, data.body.role, data.body.banned);
+      localStorage.setItem('userData', JSON.stringify({id: data.body.id, email: this.email_input, role: data.body.role, banned: data.body.banned}));
       this.router.navigate(['/']);
     }, (error: any) => {
       let err: String = String(error.error)

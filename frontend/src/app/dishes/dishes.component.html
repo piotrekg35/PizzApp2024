@@ -1,6 +1,6 @@
 <div class="row" style="margin-top:10px;">
     <div class="col-sm-6 col-md-6 col-xl-3" style="margin-bottom: 10px;padding: 0px;" *ngFor="let dish of dish_list">
-    <app-dish (orderEvent)="order()" (resignEvent)="resign()"
+    <app-dish (dishDelEvent)="updateDishList($event)"
     style="display:flex;justify-content: center;flex-wrap: wrap;"
         [id]="dish.id"
         [name]="dish.name"

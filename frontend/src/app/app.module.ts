@@ -19,6 +19,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProfileComponent } from './profile/profile.component';
 import { OrderSchemeComponent } from './order-scheme/order-scheme.component';
+import { DishManagementComponent } from './dish-management/dish-management.component';
+import { AddingDishComponent } from './adding-dish/adding-dish.component';
+import { UserManagementComponent } from './user-management/user-management.component';
 
 
 @NgModule({
@@ -34,7 +37,10 @@ import { OrderSchemeComponent } from './order-scheme/order-scheme.component';
     RegisterComponent,
     LogInComponent,
     ProfileComponent,
-    OrderSchemeComponent
+    OrderSchemeComponent,
+    DishManagementComponent,
+    AddingDishComponent,
+    UserManagementComponent
   ],
   imports: [
     HttpClientModule,

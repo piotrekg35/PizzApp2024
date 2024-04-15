@@ -3,12 +3,15 @@
 <div *ngFor="let rating of rating_list">
   <app-comment [new_rating]="rating.new_rating"
   [nick]="rating.nick"
+  [usrId]="rating.user_id"
   [title]="rating.title"
+  [dish_id]="id"
   [description]="rating.description"
-  [new_rating]="rating.rating">
+  [new_rating]="rating.rating"
+  (newItemEvent)="updateAfterDelete()">
   </app-comment>
 </div>
-<div *ngIf="client && !reviewed && bought || manager">
+<div *ngIf="client && !reviewed && bought">
     <h3>Dodaj opinię.</h3>
     <h4>Obowiązkowe pola zaznaczone są gwiazdką (*)</h4>
     <h4>{{msg}}</h4>

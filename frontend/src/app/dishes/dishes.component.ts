@@ -10,13 +10,10 @@ import {HttpClient} from '@angular/common/http';
 
 export class DishesComponent{
   dish_list:Array<Dish>=new Array<Dish>;
-  ordered:number=0;
-  daneRef: Observable<any>;
 
   constructor(private http: HttpClient){
-    this.daneRef =http.get('/api/dishes');
-    this.daneRef.subscribe((val)=>{
-    this.dish_list.splice(0,this.dish_list.length);
+    this.http.get("/api/dishes").subscribe((val:any)=>{
+      this.dish_list.splice(0,this.dish_list.length);
       for(let i:number=0;i<val.length;i++){
         let links:Array<String>=val[i].link_to_photos.split(",");
         let new_dish:Dish=new Dish(
@@ -26,11 +23,11 @@ export class DishesComponent{
       }
     });
   }
-  order():void{
-    this.ordered++;
-  }
-  resign():void{
-    this.ordered--;
+
+  updateDishList(id:number) {
+    let dish2del=this.dish_list.findIndex((d)=>{return d.id==id;});
+    if(dish2del!=-1)
+      this.dish_list.splice(dish2del,1);
   }
 }
 class Dish{

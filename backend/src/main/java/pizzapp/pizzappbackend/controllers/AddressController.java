@@ -21,16 +21,16 @@ public class AddressController {
     }
 
     @GetMapping("/api/address")
-    public Address getUserAddress(@RequestParam Integer id){
-        Optional address = this.addressService.getUserAddress(id);
-        if(address.isPresent()){
-            return (Address) address.get();
+    public ResponseEntity<Object> getUserAddress(@RequestParam Integer id){
+        Optional obj = this.addressService.getUserAddress(id);
+        if(!obj.isPresent()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Something went wrong");
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(obj.get());
     }
     @GetMapping("/api/locals")
-    public ArrayList getLocals(){
-        return this.addressService.getLocals();
+    public ResponseEntity<Object> getLocals(){
+        return ResponseEntity.status(HttpStatus.OK).body(this.addressService.getLocals());
     }
 
     @PutMapping("/api/update_address")

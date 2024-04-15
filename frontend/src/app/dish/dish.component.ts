@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faChevronLeft, faChevronRight, faPlusCircle, faMinusCircle, faTrash} from '@fortawesome/free-solid-svg-icons';
 import { CartService } from '../Services/cart.service';
 import { RolesService } from '../Services/roles.service';
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-dish',
@@ -12,8 +13,6 @@ import { RolesService } from '../Services/roles.service';
 export class DishComponent{
   faChevronLeft=faChevronLeft;
   faChevronRight=faChevronRight;
-  faPlusCircle=faPlusCircle;
-  faMinusCircle=faMinusCircle;
   faTrash=faTrash;
   @Input() id:number=0;
   @Input() name:String="";
@@ -25,11 +24,12 @@ export class DishComponent{
   @Input() rating:number=0;
   photoIndex:number=0;
   photoLink:String="";
-  ordered:number=0;
   client:boolean=false;
   manager:boolean=false;
+  @Output() dishDelEvent = new EventEmitter<number>();
 
-  constructor(private route:ActivatedRoute,private router:Router,private cs:CartService, private rs:RolesService){}
+  constructor(private route:ActivatedRoute,private router:Router,private cs:CartService, private rs:RolesService,
+              private http: HttpClient){}
   
   ngOnInit():void{
     this.photoLink=this.link_to_photos[this.photoIndex];
@@ -63,6 +63,7 @@ export class DishComponent{
     this.photoLink=this.link_to_photos[this.photoIndex];
   }
   deleteDish():void{
-    //TODO
+    this.http.delete("/api/del_dish?id="+this.id.toString()).subscribe();
+    this.dishDelEvent.emit(this.id);
   }
 }

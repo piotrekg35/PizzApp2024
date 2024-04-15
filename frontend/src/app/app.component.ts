@@ -40,6 +40,7 @@ export class AppComponent {
     this.rs.emitDefaultValues();
     this.cs.clearCart();
     this.router.navigate(['/']);
+    localStorage.removeItem('userData');
   }
   goToProfile():void{
     this.router.navigate(['/profil']);

@@ -88,7 +88,6 @@ export class DishDetailsComponent {
     this.router.navigate(['/menu']);
   }
   goToEdit(){
-    if(!this.client && !this.manager)return;
     this.router.navigate(['/edytuj', this.id]);
   }
 

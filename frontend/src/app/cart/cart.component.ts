@@ -116,7 +116,6 @@ export class CartComponent implements OnInit{
       })
     });
 
-    console.log(dateString);
     const httpOptions: { headers: HttpHeaders; observe: any; } = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

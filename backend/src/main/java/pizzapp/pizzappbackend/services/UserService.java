@@ -2,6 +2,7 @@ package pizzapp.pizzappbackend.services;
 
 import com.google.common.hash.Hashing;
 import org.springframework.stereotype.Service;
+import pizzapp.pizzappbackend.models.Dish;
 import pizzapp.pizzappbackend.models.User;
 
 import java.nio.charset.StandardCharsets;
@@ -70,7 +71,15 @@ public class UserService{
             String username = "povfpdpt" ;
             String password = "LI3dlVj4nt3t7fqcrfFO1HApkOgW2Yvu" ;
             Connection conn = DriverManager.getConnection(url, username, password);
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO public.users (email, password, role, banned) " +
+            PreparedStatement stmt = conn.prepareStatement("SELECT id FROM public.users WHERE email=?");
+            stmt.setString(1,email);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                stmt.close();
+                conn.close();
+                return Optional.of("Email already taken");
+            }
+            stmt = conn.prepareStatement("INSERT INTO public.users (email, password, role, banned) " +
                     "VALUES (?,?,'USER', false)");
             stmt.setString(1,email);
             stmt.setString(2,sha256hex);
@@ -117,7 +126,31 @@ public class UserService{
         catch(Exception e)
         {
             out.println (e) ;
-            optional=Optional.of(e.toString());
+        }
+        return optional;
+    }
+
+    public Optional updateUser(User user){
+        Optional optional = Optional.empty();
+        try
+        {
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://cornelius.db.elephantsql.com:5432/povfpdpt";
+            String username = "povfpdpt" ;
+            String password = "LI3dlVj4nt3t7fqcrfFO1HApkOgW2Yvu" ;
+            Connection conn = DriverManager.getConnection(url, username, password);
+            PreparedStatement stmt = conn.prepareStatement("UPDATE public.users SET role=?, banned=? WHERE id=?");
+            stmt.setString(1,user.getRole());
+            stmt.setBoolean(2,user.isBanned());
+            stmt.setInt(3,user.getId());
+            stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+
+            optional=Optional.of(user);
+        }
+        catch(Exception e) {
+            out.println(e);
         }
         return optional;
     }

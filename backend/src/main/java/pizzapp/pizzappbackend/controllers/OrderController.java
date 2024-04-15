@@ -34,7 +34,7 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(obj);
     }
     @GetMapping("/api/zamowienia")
-    public ArrayList<Order> getUsersOrders(@RequestParam Integer id){
-        return this.orderService.getOrders(id);
+    public ResponseEntity<Object> getUsersOrders(@RequestParam Integer id){
+        return ResponseEntity.status(HttpStatus.OK).body(this.orderService.getOrders(id));
     }
 }

@@ -30,7 +30,6 @@ export class RatingComponent implements OnChanges{
   ngOnChanges(){
 
     this.rs.userIdObservable.subscribe(usrid=>{
-      if(usrid==0)return;
       this.userId=usrid;
       const httpOptions: { headers: HttpHeaders; observe: any; } = {
         headers: new HttpHeaders({
@@ -132,5 +131,10 @@ export class RatingComponent implements OnChanges{
     ,(error)=>this.msg="Coś poszło nie tak");
 
 
+  }
+  updateAfterDelete(){
+    this.getAllComments();
+    this.reviewed=false;
+    this.newItemEvent.emit();
   }
 }

@@ -17,8 +17,17 @@ public class RatingController {
     public RatingController(RatingService ratingService){ this.ratingService=ratingService; }
 
     @GetMapping("/api/ratings")
-    public ArrayList<Rating> getRatings(@RequestParam Integer id){
-        return this.ratingService.getRatingsForDish(id);
+    public ResponseEntity<Object>  getRatings(@RequestParam Integer id){
+        return ResponseEntity.status(HttpStatus.OK).body(this.ratingService.getRatingsForDish(id));
+    }
+
+    @DeleteMapping("/api/del_rating")
+    public ResponseEntity<Object>  delRating(@RequestBody Rating rating){
+        Optional obj = this.ratingService.delRating(rating);
+        if(!obj.isPresent()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Something went wrong");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(obj);
     }
 
     @PostMapping("/api/add_rating")

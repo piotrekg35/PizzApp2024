@@ -105,7 +105,6 @@ public class AddressService {
         }
         catch(Exception e) {
             out.println(e);
-            optional = Optional.of(e.toString());
         }
         return optional;
     }

@@ -12,7 +12,13 @@ export class RolesService {
   emailObservable = new ReplaySubject<string>();
 
   constructor() {
-    this.emitDefaultValues();
+    let userData =localStorage.getItem('userData')
+    if(userData){
+      let userDataJSON=JSON.parse(userData);
+      this.emitValues(userDataJSON.id, userDataJSON.email, userDataJSON.role, userDataJSON.banned);
+    }
+    else
+      this.emitDefaultValues();
   }
   emitValues(id:number, email:string, role:string, banned: boolean){
     this.loggedObservable.next(true);

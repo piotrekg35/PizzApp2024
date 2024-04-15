@@ -1,0 +1,32 @@
+<div class="back" style="display:flex; cursor:pointer"(click)="goBack()">
+    <fa-icon [icon]="faChevronLeft" size="lg"(click)="goBack()"></fa-icon>
+    <p>Wróć</p>
+</div>
+<div style="margin: 0.8em;">
+<h2>Dodawanie</h2>
+<p>{{message}}<p>
+<form>
+    <div class="form-group">
+        <label for="name">Nazwa</label>
+        <input type="text" class="form-control" id="name" [(ngModel)]="name" [ngModelOptions]="{standalone: true}">
+    </div>
+    <div class="form-group">
+        <label for="ingredients">Składniki</label>
+        <input type="text" class="form-control" id="ingredients" [(ngModel)]="ingredients" [ngModelOptions]="{standalone: true}">
+    </div>
+    <div class="form-group">
+        <label for="price">Cena</label>
+        <input type="text" class="form-control" id="price" [(ngModel)]="price" [ngModelOptions]="{standalone: true}">
+    </div>
+    <div class="form-group">
+        <label for="description">Opis</label>
+        <input type="text" class="form-control" id="description" [(ngModel)]="description" [ngModelOptions]="{standalone: true}">
+    </div>
+    <div class="form-group">
+        <label for="link_to_photos">Link do zdjęć (po przecinku, minimum 2 zdjęcia)</label>
+        <input type="text" class="form-control" id="link_to_photos" [(ngModel)]="link_to_photos" [ngModelOptions]="{standalone: true}">
+    </div>
+</form>
+<button type="button" class="btn btn-light" style="margin: 5px;" (click)="clean()">Wyczyść</button>
+<button type="button" class="btn btn-dark" style="margin: 5px;" (click)="addDish()">Dodaj</button>
+</div>

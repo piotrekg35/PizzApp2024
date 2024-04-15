@@ -1,0 +1,6 @@
+table, tr, th, td{
+    border: black 1px solid
+}
+tr{
+    text-align: center;
+}

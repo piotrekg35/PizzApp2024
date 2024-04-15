@@ -21,8 +21,8 @@ public class UserController {
     }
 
     @GetMapping("/api/users")
-    public ArrayList getUsers(){
-        return this.userService.getUsers();
+    public ResponseEntity<Object> getUsers(){
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.getUsers());
     }
 
     @PostMapping("/api/zarejestruj")
@@ -42,8 +42,13 @@ public class UserController {
         if(!obj.isPresent()){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User does not exist!");
         }
-        else if(obj.get() instanceof String){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(obj.get());
+        return ResponseEntity.status(HttpStatus.OK).body(obj.get());
+    }
+    @PutMapping("api/update_user")
+    public ResponseEntity<Object> updateUser(@RequestBody User user) {
+        Optional obj = this.userService.updateUser(user);
+        if(!obj.isPresent()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Something went wrong!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(obj.get());
     }

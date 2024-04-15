@@ -46,7 +46,7 @@ public class RatingService {
 
     public Optional<Rating> addRating(Rating rating) {
 
-        Optional optional = Optional.empty();
+        Optional optional;
         try
         {
             Class.forName("org.postgresql.Driver");
@@ -74,5 +74,28 @@ public class RatingService {
             optional = Optional.of(e.toString());
         }
         return optional;
+    }
+
+    public Optional<Rating> delRating(Rating rating) {
+        try
+        {
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://cornelius.db.elephantsql.com:5432/povfpdpt";
+            String username = "povfpdpt" ;
+            String password = "LI3dlVj4nt3t7fqcrfFO1HApkOgW2Yvu" ;
+            Connection conn = DriverManager.getConnection(url, username, password);
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM public.ratings WHERE user_id=? AND dish_id=?");
+            stmt.setInt(1,rating.getUser_id());
+            stmt.setInt(2,rating.getDish_id());
+            stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+
+            return Optional.of(rating);
+        }
+        catch(Exception e) {
+            out.println(e);
+        }
+        return null;
     }
 }

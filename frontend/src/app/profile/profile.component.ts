@@ -1,4 +1,4 @@
-import {Component, OnChanges} from '@angular/core';
+import {Component, OnChanges, OnInit} from '@angular/core';
 import {RolesService} from "../Services/roles.service";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
@@ -7,7 +7,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnChanges{
+export class ProfileComponent implements OnInit{
   email:string="";
   msg:string="";
   zamowienia:any[] = [];
@@ -19,7 +19,7 @@ export class ProfileComponent implements OnChanges{
 
   constructor(private rs:RolesService, private http: HttpClient){}
 
-  ngOnChanges(){
+  ngOnInit(){
     this.rs.userIdObservable.subscribe(id=>{
       this.id=id;
       if(id==0)return;
