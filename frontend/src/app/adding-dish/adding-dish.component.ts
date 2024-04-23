@@ -27,10 +27,14 @@ export class AddingDishComponent {
       this.message="Błędne dane!";
       return;
     }
+    let userData =localStorage.getItem('jwtToken')
+    if(!userData) return;
+
     const httpOptions: { headers: HttpHeaders } = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': 'Bearer '+ userData.toString()
       })
     };
     let body={
@@ -42,7 +46,7 @@ export class AddingDishComponent {
       link_to_photos: this.link_to_photos,
       rating: 0
     }
-    this.http.post("/api/add_dish",body,httpOptions)
+    this.http.post("/api/dish",body,httpOptions)
         .subscribe(()=>{
           this.message="Sukces!";
           this.clean();

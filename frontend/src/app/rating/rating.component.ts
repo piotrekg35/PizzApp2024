@@ -20,6 +20,7 @@ export class RatingComponent implements OnChanges{
   banned:boolean=false;
   client:boolean=false;
   manager:boolean=false;
+  admin:boolean=false;
   reviewed:boolean=false;
   bought:boolean=false;
   userId:number=0;
@@ -29,50 +30,57 @@ export class RatingComponent implements OnChanges{
 
   ngOnChanges(){
 
-    this.rs.userIdObservable.subscribe(usrid=>{
-      this.userId=usrid;
-      const httpOptions: { headers: HttpHeaders; observe: any; } = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }),
-        observe: 'response'
-      };
-
-      this.getAllComments();
-
-      let response = this.http.get('/api/zamowienia?id='+usrid.toString(), httpOptions);
-
-      response.subscribe((data:any) => {
-        data.body.forEach((order: any)=>{
-          if(order)
-          order.order_products.forEach((p: any)=>{
-            if(p.dish_id==this.id){
-              this.bought=true;
-            }
-          })
-        })
-      }, (error: any) => {
-        this.msg = "Coś poszło nie tak spróbuj ponownie!"
-      });
-    });
-
     this.rs.bannedObservable.subscribe(a=>{
       this.banned=a;
       if(a)this.msg="Nie masz możliwości oceniania i zostawiania komentarzy!";
     });
 
-    this.rs.roleObservable.subscribe(r=>{
-      switch (r){
-        case("USER"):
-          this.client=true;
-          break;
-        case("MANAGER"):
-          this.manager=true;
-          break;
-        default:
-          this.client=this.manager=false;
-      }
+    this.rs.userIdObservable.subscribe(usrid=>{
+
+      this.rs.roleObservable.subscribe(r=>{
+        switch (r){
+          case("USER"):
+            this.client=true;
+            break;
+          case("MANAGER"):
+            this.manager=true;
+            break;
+          case("ADMIN"):
+            this.admin=true;
+            break;
+          default:
+            this.client=this.manager=this.admin=false;
+        }
+
+        this.getAllComments();
+        this.userId=usrid;
+        let userData =localStorage.getItem('jwtToken')
+        if(!userData || this.admin || this.manager) return;
+
+        const httpOptions: { headers: HttpHeaders; observe: any; } = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer '+ userData.toString()
+          }),
+          observe: 'response'
+        };
+
+        let response = this.http.get('/api/orders', httpOptions);
+
+        response.subscribe((data:any) => {
+          data.body.forEach((order: any)=>{
+            if(order)
+              order.order_products.forEach((p: any)=>{
+                if(p.dish_id==this.id){
+                  this.bought=true;
+                }
+              })
+          })
+        }, (error: any) => {
+          this.msg = "Coś poszło nie tak spróbuj ponownie!"
+        });
+      });
     });
   }
 
@@ -102,10 +110,14 @@ export class RatingComponent implements OnChanges{
     if(this.new_rating<1||this.new_rating>5){
       this.msg="Błędna ocena"
     }
+    let userData =localStorage.getItem('jwtToken')
+    if(!userData) return;
+
     const httpOptions: { headers: HttpHeaders; observe: any; } = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': 'Bearer '+ userData.toString()
       }),
       observe: 'response'
     };
@@ -122,7 +134,7 @@ export class RatingComponent implements OnChanges{
       nick: this.nick
     };
 
-    let response = this.http.post("/api/add_rating",new_rating_body,httpOptions);
+    let response = this.http.post("/api/ratings",new_rating_body,httpOptions);
     response.subscribe(()=> {
       this.getAllComments();
       this.reviewed=true;

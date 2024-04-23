@@ -28,6 +28,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "firebase": "^9.15.0",
+    "jwt-decode": "^4.0.0",
     "mocha": "^6.2.3",
     "rxjs": "~7.5.0",
     "selenium-webdriver": "^4.0.0-alpha.3",

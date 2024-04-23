@@ -28,11 +28,11 @@ export class RegisterComponent {
       observe: 'response'
     };
 
-    let response = this.http.post('/api/zarejestruj',{ email: this.email_input,
+    let response = this.http.post('/api/register',{ email: this.email_input,
           password:this.pwd_input }, httpOptions);
     response.subscribe((data:any) => {
       this.rs.emitValues(data.body.id, this.email_input, data.body.role, data.body.banned);
-          localStorage.setItem('userData', JSON.stringify({id: data.body.id, email: this.email_input, role: data.body.role, banned: data.body.banned}));
+          localStorage.setItem('jwtToken', data.headers.get('token'));
       this.router.navigate(['/']);
       return;}
         , (error:any)=>{

@@ -2,7 +2,6 @@ package pizzapp.pizzappbackend.services;
 
 import com.google.common.hash.Hashing;
 import org.springframework.stereotype.Service;
-import pizzapp.pizzappbackend.models.Dish;
 import pizzapp.pizzappbackend.models.User;
 
 import java.nio.charset.StandardCharsets;

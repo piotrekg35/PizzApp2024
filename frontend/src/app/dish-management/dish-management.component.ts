@@ -42,10 +42,14 @@ export class DishManagementComponent {
       this.msg="Błędne dane!"
       return;
     }
+    let userData =localStorage.getItem('jwtToken')
+    if(!userData) return;
+
     const httpOptions: { headers: HttpHeaders } = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': 'Bearer '+ userData.toString()
       })
     };
     let body={
@@ -57,6 +61,6 @@ export class DishManagementComponent {
       link_to_photos: this.link_to_photos,
       rating: 0
     }
-    this.http.put("/api/update_dish",body,httpOptions).subscribe(()=>this.goBack());
+    this.http.put("/api/dish",body,httpOptions).subscribe(()=>this.goBack());
   }
 }

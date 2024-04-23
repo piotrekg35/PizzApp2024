@@ -31,7 +31,15 @@ export class CartComponent implements OnInit{
 
     this.rs.userIdObservable.subscribe(id=>this.id=id);
 
-    let response = this.http.get("/api/address?id="+this.id.toString());
+    let userData =localStorage.getItem('jwtToken')
+    if(!userData) return;
+    const httpOptions: { headers: HttpHeaders; } = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer '+ userData.toString()
+      })
+    };
+
+    let response = this.http.get("/api/address", httpOptions);
     response.subscribe((data:any)=>{
       this.address = data.address;
       this.postcode = data.postCode;
@@ -70,6 +78,7 @@ export class CartComponent implements OnInit{
       this.cartForm.style.display="none";
       this.odbiorSelect.style.display="block";
       this.finalPrice-=9.99;
+      this.finalPrice=Math.round(this.finalPrice*100)/100;
     }
     else if(radio==this.dostawaRadio){
       this.odbiorRadio.checked=false;
@@ -78,6 +87,7 @@ export class CartComponent implements OnInit{
       this.odbiorSelect.style.display="none";
       this.finalAddress=this.address+", "+this.postcode+", "+this.city;
       this.finalPrice+=9.99;
+      this.finalPrice=Math.round(this.finalPrice*100)/100;
     }
   }
   clikInnerRadio(radio:any){
@@ -116,15 +126,19 @@ export class CartComponent implements OnInit{
       })
     });
 
+    let userData =localStorage.getItem('jwtToken')
+    if(!userData) return;
+
     const httpOptions: { headers: HttpHeaders; observe: any; } = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': 'Bearer '+ userData.toString()
       }),
       observe: 'response'
     };
 
-    let response = this.http.post('/api/zamowienie', body, httpOptions);
+    let response = this.http.post('/api/orders', body, httpOptions);
     response.subscribe((data:any) => {
       this.msg="Dziękujemy za zakupy!";
       this.cs.clearCart();

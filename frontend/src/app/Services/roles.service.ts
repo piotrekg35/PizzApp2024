@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +13,18 @@ export class RolesService {
   loggedObservable = new ReplaySubject<boolean>();
   emailObservable = new ReplaySubject<string>();
 
-  constructor() {
-    let userData =localStorage.getItem('userData')
+  constructor(private http:HttpClient) {
+    let userData =localStorage.getItem('jwtToken')
     if(userData){
-      let userDataJSON=JSON.parse(userData);
-      this.emitValues(userDataJSON.id, userDataJSON.email, userDataJSON.role, userDataJSON.banned);
+      let userDataJSON:any = jwtDecode(userData);
+      const httpOptions: { observe: any; } = {
+        observe: 'response'
+      };
+      http.get("/api/verify_token?token="+userData.toString(),httpOptions)
+          .subscribe((a)=>{
+            this.emitValues(userDataJSON.id, userDataJSON.sub, userDataJSON.role, userDataJSON.banned);
+            },
+                  e=>localStorage.removeItem('jwtToken'));
     }
     else
       this.emitDefaultValues();

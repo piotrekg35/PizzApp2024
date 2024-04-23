@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { faChevronLeft, faChevronRight, faPlusCircle, faMinusCircle, faTrash} from '@fortawesome/free-solid-svg-icons';
 import { CartService } from '../Services/cart.service';
 import { RolesService } from '../Services/roles.service';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'app-dish',
@@ -63,7 +63,15 @@ export class DishComponent{
     this.photoLink=this.link_to_photos[this.photoIndex];
   }
   deleteDish():void{
-    this.http.delete("/api/del_dish?id="+this.id.toString()).subscribe();
+    let userData =localStorage.getItem('jwtToken')
+    if(!userData) return;
+
+    const httpOptions: { headers: HttpHeaders } = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer '+ userData.toString()
+      })
+    };
+    this.http.delete("/api/dish?id="+this.id.toString(),httpOptions).subscribe();
     this.dishDelEvent.emit(this.id);
   }
 }

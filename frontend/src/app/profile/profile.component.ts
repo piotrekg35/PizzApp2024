@@ -23,7 +23,14 @@ export class ProfileComponent implements OnInit{
     this.rs.userIdObservable.subscribe(id=>{
       this.id=id;
       if(id==0)return;
-      let response = this.http.get("/api/address?id="+id.toString());
+      let userData =localStorage.getItem('jwtToken')
+      if(!userData) return;
+      const httpOptions: { headers: HttpHeaders; } = {
+        headers: new HttpHeaders({
+          'Authorization': 'Bearer '+ userData.toString()
+        })
+      };
+      let response = this.http.get("/api/address", httpOptions);
       response.subscribe((data:any)=>{
         if(data){
           this.address = data.address;
@@ -31,7 +38,7 @@ export class ProfileComponent implements OnInit{
           this.city = data.city;
         }
       });
-      response = this.http.get("/api/zamowienia?id="+id.toString());
+      response = this.http.get("/api/orders",httpOptions);
       response.subscribe((data:any)=>{if(data)this.zamowienia=data});
     });
 
@@ -47,16 +54,18 @@ export class ProfileComponent implements OnInit{
       this.msg="Uzupełnij wszystkie pola!"
       return;
     }
-
+    let userData =localStorage.getItem('jwtToken')
+    if(!userData) return;
     const httpOptions: { headers: HttpHeaders; observe: any; } = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': 'Bearer '+ userData.toString()
       }),
       observe: 'response'
     };
 
-    let response = this.http.put('/api/update_address?id='+this.id.toString(), {
+    let response = this.http.put('/api/address', {
       address: this.address,
       postCode: this.postcode,
       city: this.city

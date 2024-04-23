@@ -45,8 +45,6 @@ public class RatingService {
     }
 
     public Optional<Rating> addRating(Rating rating) {
-
-        Optional optional;
         try
         {
             Class.forName("org.postgresql.Driver");
@@ -67,13 +65,12 @@ public class RatingService {
             stmt.close();
             conn.close();
 
-            optional=Optional.of(rating);
+            return Optional.of(rating);
         }
         catch(Exception e) {
             out.println(e);
-            optional = Optional.of(e.toString());
         }
-        return optional;
+        return Optional.empty();
     }
 
     public Optional<Rating> delRating(Rating rating) {
@@ -96,6 +93,6 @@ public class RatingService {
         catch(Exception e) {
             out.println(e);
         }
-        return null;
+        return Optional.empty();
     }
 }

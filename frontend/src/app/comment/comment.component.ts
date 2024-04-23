@@ -30,10 +30,14 @@ export class CommentComponent {
     const date: Date=new Date();
     let dateString = (date.getFullYear()-1900).toString()+'-'+date.getMonth().toString()+'-'+date.getDate().toString();
 
-    const httpOptions: { headers: HttpHeaders, body: any} = {
+    let userData =localStorage.getItem('jwtToken')
+    if(!userData) return;
+
+    const httpOptions: { headers: HttpHeaders; body: any; } = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': 'Bearer '+ userData.toString()
       }),
       body: {
         user_id: this.usrId,
@@ -46,6 +50,6 @@ export class CommentComponent {
       }
     };
 
-    this.http.delete("/api/del_rating", httpOptions).subscribe(a=>this.newItemEvent.emit());
+    this.http.delete("/api/ratings", httpOptions).subscribe(a=>this.newItemEvent.emit());
   }
 }

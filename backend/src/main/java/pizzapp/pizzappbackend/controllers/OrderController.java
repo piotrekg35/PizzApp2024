@@ -6,8 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pizzapp.pizzappbackend.models.Dish;
 import pizzapp.pizzappbackend.models.Order;
+import pizzapp.pizzappbackend.models.Token;
 import pizzapp.pizzappbackend.models.UserCredentials;
 import pizzapp.pizzappbackend.services.OrderService;
+import pizzapp.pizzappbackend.services.TokenService;
 import pizzapp.pizzappbackend.services.UserService;
 
 import java.util.ArrayList;
@@ -16,25 +18,34 @@ import java.util.Optional;
 @RestController
 public class OrderController {
     private OrderService orderService;
+    private TokenService tokenService;
 
     @Autowired
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, TokenService tokenService) {
         this.orderService = orderService;
+        this.tokenService = tokenService;
     }
 
-    @PostMapping("/api/zamowienie")
-    public ResponseEntity<Object> processOrder(@RequestBody Order order){
+    @PostMapping("/api/orders")
+    public ResponseEntity<Object> processOrder(@RequestBody Order order, @RequestHeader("Authorization") String token){
+        token=token.split(" ")[1];
+        Optional<Token> t = this.tokenService.verifyToken(token);
+        if(t.isEmpty() || !t.get().getRole().equals("USER"))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
         Optional obj = this.orderService.processOrder(order);
         if(!obj.isPresent()){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Something went wrong");
+            return ResponseEntity.notFound().build();
         }
-        else if(obj.get() instanceof String){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(obj.get());
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(obj);
+        return ResponseEntity.ok().body(obj.get());
     }
-    @GetMapping("/api/zamowienia")
-    public ResponseEntity<Object> getUsersOrders(@RequestParam Integer id){
-        return ResponseEntity.status(HttpStatus.OK).body(this.orderService.getOrders(id));
+    @GetMapping("/api/orders")
+    public ResponseEntity<Object> getUsersOrders(@RequestHeader("Authorization") String token){
+        token=token.split(" ")[1];
+        Optional<Token> t = this.tokenService.verifyToken(token);
+        if(t.isEmpty() || !t.get().getRole().equals("USER"))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        int id = t.get().getId();
+        return ResponseEntity.ok().body(this.orderService.getOrders(id));
     }
 }
