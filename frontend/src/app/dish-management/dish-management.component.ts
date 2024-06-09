@@ -55,7 +55,7 @@ export class DishManagementComponent {
     let body={
       id: this.id,
       description: this.description,
-      ingridients: this.ingredients,
+      ingredients: this.ingredients,
       name: this.name,
       price: this.price,
       link_to_photos: this.link_to_photos,
